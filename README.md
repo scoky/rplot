@@ -1,3 +1,3 @@
 # rplot
 
-bash scripts for quickly creating plots with ggplot2.
+Scripts for quickly creating plots with ggplot2.
