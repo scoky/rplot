@@ -16,20 +16,21 @@ parser$add_argument('--xbreaks', nargs='*', help='tick points on the x-axis')
 parser$add_argument('--ybreaks', nargs='*', help='tick points on the y-axis')
 parser$add_argument('--xlabels', nargs='*', help='tick labels on the x-axis')
 parser$add_argument('--ylabels', nargs='*', help='tick labels on the y-axis')
-parser$add_argument('--fontsize', default='19', help='size of text')
+parser$add_argument('--fontsize', default='12', help='size of text')
 parser$add_argument('--geom', nargs='*', default=c('step'), help='type of the y data')
 parser$add_argument('--linetype', nargs='*', help='linetypes of data')
 parser$add_argument('--colour', nargs='*', help='colour of data')
 parser$add_argument('--shape', nargs='*', help='shape of data')
 parser$add_argument('--fill', nargs='*', help='fill colour of data')
 parser$add_argument('--alpha', nargs='*', default=c(1), help='transparency of data')
-parser$add_argument('--size', nargs='*', default=c(1), help='size of data')
+parser$add_argument('--size', nargs='*', default=c(0.9), help='size of data')
 parser$add_argument('--canvas', nargs='*', default=c(7,5.75), help='size of the canvas')
 parser$add_argument('--filename', default='Rplot.pdf', help='output filename')
 parser$add_argument('--legend', default='true', choices=c('true', 'false'), help='show or hide legend')
 parser$add_argument('--legendColumns', default='5', help='number of columns in the legend')
 parser$add_argument('--keySize', default='2', help='Size of the key in the legend')
 parser$add_argument('--flip', default='false', choices=c('true', 'false'), help='flip the x and y axis')
+parser$add_argument('--header', default='false', choices=c('true', 'false'), help='indicate whether input file has a header')
 args <- parser$parse_args()
 args$legendColumns = as.numeric(args$legendColumns)
 
@@ -51,10 +52,10 @@ while (i <= length(args$sources)) {
         label = args$sourcelabels[i]
     }
     if (args$geom[min(i, length(args$geom))] == 'ribbon') {
-        data <- read.table(args$sources[i], col.names = c('x', 'y', 'y2'))
+        data <- read.table(args$sources[i], col.names = c('x', 'y', 'y2'), header = as.logical(args$header))
         y2s <- c(y2s, data$y2)
     } else {
-        data <- read.table(args$sources[i], col.names = c('x', 'y'))
+        data <- read.table(args$sources[i], col.names = c('x', 'y'), header = as.logical(args$header))
         y2s <- c(y2s, rep(0, length(data$x)))
     }
     ns <- c(ns, rep(label, length(data$x)))
